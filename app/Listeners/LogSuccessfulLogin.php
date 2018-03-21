@@ -34,7 +34,7 @@ class LogSuccessfulLogin
      */
     public function handle(Login $event)
     {
-        // if (auth()) {
+        // if (!auth()->guard('admin')) {
             // merge cart from cookie to db
             $cookie = $this->cart->merge();
         // }

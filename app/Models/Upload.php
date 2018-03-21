@@ -11,5 +11,5 @@ class Upload extends Model
     *
     * @var array
     */
-    protected $fillable = ['admin_id','path','basename'];
+    protected $fillable = ['admin_id','path','basename','filename','size'];
 }

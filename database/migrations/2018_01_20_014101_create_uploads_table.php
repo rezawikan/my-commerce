@@ -18,6 +18,8 @@ class CreateUploadsTable extends Migration
             $table->unsignedInteger('admin_id');
             $table->string('path');
             $table->string('basename');
+            $table->string('filename');
+            $table->integer('size');
             $table->timestamps();
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
         });

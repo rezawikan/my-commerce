@@ -36,7 +36,7 @@
                 <div class="grid-item">
                   <div class="product-card">
                     <div class="product-badge text-danger">50% Off</div>
-                    <a class="product-thumb" href="shop-single.html">
+                    <a class="product-thumb" href="catalogs/{{ $product->categories->first()->slug }}/{{ $product->slug }}">
                       <img src="{{ asset('/img/shop/products/01.jpg') }}" alt="Product"></a>
                     <h3 class="product-title"><a href="shop-single.html">{{ $product->name }}</a></h3>
                     <h4 class="product-price" >

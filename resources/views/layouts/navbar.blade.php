@@ -213,7 +213,7 @@
                 <h6 class="user-name">{{ Auth::user()->name }}</h6><span class="text-xs text-muted">290 Reward points</span>
               </div>
             </li>
-            <li><a href="account-profile.html">My Profile</a></li>
+            <li><a href="{{ route('profile.index') }}">My Profile</a></li>
             <li><a href="account-orders.html">Orders List</a></li>
             <li><a href="{{ route("wishlist.show") }}">Wishlist</a></li>
             <li class="sub-menu-separator"></li>

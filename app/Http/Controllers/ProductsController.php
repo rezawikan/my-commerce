@@ -30,7 +30,7 @@ class ProductsController extends Controller
     {
         $q = $request->get('q');
         $products = Product::where('name', 'like', '%'.$q.'%')->orderBy('updated_at', 'desc')->paginate(3);
-        return view('products.index')->with(compact(['products','q']));
+        return view('admin.products.index')->with(compact(['products','q']));
     }
 
     /**
@@ -40,9 +40,10 @@ class ProductsController extends Controller
      */
     public function create()
     {
+
         $options = Category::GroupArray();
 
-        return view('products.create')->with(compact('options'));
+        return view('admin.products.create')->with(compact('options'));
     }
 
     /**
@@ -58,20 +59,19 @@ class ProductsController extends Controller
         'model' => 'required|string',
         'stock' => 'required|digits_between:1,3',
         'price' => 'required|numeric',
-        'photo' => 'image',
         'category' => 'required',
         'description' => 'required'
       ]);
 
         $data = $request->except(['category']);
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('products', 'public');
-        }
+        // if ($request->hasFile('photo')) {
+        //     $data['photo'] = $request->file('photo')->store('products', 'public');
+        // }
 
         $product = Product::create($data);
         $product->categories()->sync($request->category);
-        flash($request->get('name'). ' product saved')->success();
+        // flash($request->get('name'). ' product saved')->success();
 
         return redirect()->route('products.index');
     }
@@ -99,7 +99,7 @@ class ProductsController extends Controller
         $options    = Category::GroupArray();
         $categories = $product->categories->pluck('id')->toArray();
 
-        return view('products.edit')->with(compact('product', 'options', 'categories'));
+        return view('admin.products.edit')->with(compact('product', 'options', 'categories'));
     }
 
     /**
@@ -116,7 +116,6 @@ class ProductsController extends Controller
         'model' => 'required|string',
         'stock' => 'required|digits_between:1,3',
         'price' => 'required|numeric',
-        'photo' => 'image',
         'category' => 'required|array|exists:categories,id',
         'description' => 'required',
       ]);
@@ -124,12 +123,12 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $data    = $request->except(['category']);
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('products', 'public');
-            if (isset($product->photo)) {
-                File::delete(storage_path().'/app/public/'.$product->photo);
-            }
-        }
+        // if ($request->hasFile('photo')) {
+        //     $data['photo'] = $request->file('photo')->store('products', 'public');
+        //     if (isset($product->photo)) {
+        //         File::delete(storage_path().'/app/public/'.$product->photo);
+        //     }
+        // }
 
         $product->update($data);
         if (count($request->category) > 0) {
@@ -153,14 +152,14 @@ class ProductsController extends Controller
         $product = Product::withTrashed()->where('id', $id)->first();
 
         if ($product->trashed()) {
-            if ($product->photo) {
-                File::delete(storage_path().'/app/public/'.$product->photo);
-            }
+            // if ($product->photo) {
+            //     File::delete(storage_path().'/app/public/'.$product->photo);
+            // }
 
-            flash('Product "'.$product->name.'" permanently deleted')->success();
+            // flash('Product "'.$product->name.'" permanently deleted')->success();
             $product->forceDelete();
         } else {
-            flash('Product "'.$product->name.'" move to trash')->success();
+            // flash('Product "'.$product->name.'" move to trash')->success();
             $product->delete();
         }
         return redirect()->route('products.index');

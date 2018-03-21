@@ -1,7 +1,7 @@
 
 window._ = require('lodash');
 
-window.Popper = require('popper.js/dist/umd/popper');
+window.Popper = require('popper.js').default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -57,7 +57,6 @@ if (token) {
 //     key: 'your-pusher-key'
 // });
 //
-
-// Initialize
-window.Dropzone = require('dropzone');
-// Disable auto discover for all elements:
+//
+// window.Dropzone = require('dropzone');
+// Dropzone.autoDiscover = false;

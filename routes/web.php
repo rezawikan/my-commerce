@@ -27,7 +27,9 @@ Route::group(['prefix' => 'master'], function () {
         Route::get('dashboard', 'AuthAdmin\HomeController@index')->name('admin.home');
         Route::post('products/trashes/{product}', 'ProductsController@restore')->name('products.restore');
         Route::resource('products', 'ProductsController');
-        Route::post('upload/products', 'UploadController@store')->name('upload.products.store');
+        Route::delete('upload/{basename}/{id}', 'UploadController@destroy')->name('admin.upload.delete');
+        Route::post('upload/{basename}', 'UploadController@store')->name('admin.upload.store');
+        Route::get('upload/{basename}/{id?}', 'UploadController@index')->name('admin.upload.index');
     });
 });
 
@@ -52,3 +54,10 @@ Route::group(['prefix' => 'master'], function () {
     // Route::get('checkout/login', 'CheckoutController@postLogin');
     Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
     Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+
+
+    Route::group(['middleware' => ['auth']], function () {
+        Route::get('profile','UserController@index')->name('profile.index');
+        Route::get('profile/edit','UserController@edit')->name('profile.edit');
+        Route::put('profile/{id}','UserController@update')->name('profile.update');
+    });

@@ -15,9 +15,13 @@ window.Event = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import VueTheMask from 'vue-the-mask';
+Vue.use(VueTheMask);
+
 Vue.component('wishlist', require('./components/wishlist.vue'));
 Vue.component('addcart', require('./components/addcart.vue'));
 Vue.component('cart', require('./components/cart.vue'));
+Vue.component('profile', require('./components/profile.vue'));
 
 const app = new Vue({
   el: '#app'

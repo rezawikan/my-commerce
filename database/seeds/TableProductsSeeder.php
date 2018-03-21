@@ -35,7 +35,6 @@ class TableProductsSeeder extends Seeder
       'name'  => 'Nike Air Force',
       'slug' => str_slug('Nike Air Force', '-'),
       'model' => 'Sepatu Pria',
-      'photo' =>'stub-shoe.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 340000
@@ -45,7 +44,6 @@ class TableProductsSeeder extends Seeder
       'name' => 'Nike Air Max',
       'slug' => str_slug('Nike Air Max', '-'),
       'model' => 'Sepatu Wanita',
-      'photo'=>'stub-shoe.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 420000
@@ -54,7 +52,6 @@ class TableProductsSeeder extends Seeder
       'name' => 'Nike Air Zoom',
       'slug' => str_slug('Nike Air Zoom', '-'),
       'model' => 'Sepatu Wanita',
-      'photo'=>'stub-shoe.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 360000]);
@@ -67,7 +64,6 @@ class TableProductsSeeder extends Seeder
       'name' => 'Nike Aeroloft Bomber',
       'slug' => str_slug('Nike Aeroloft Bomber', '-'),
       'model' => 'Jaket Wanita',
-      'photo'=>'stub-jacket.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 720000
@@ -76,7 +72,6 @@ class TableProductsSeeder extends Seeder
       'name' => 'Nike Guild 550',
       'slug' => str_slug('Nike Guild 550', '-'),
       'model' => 'Jaket Pria',
-      'photo'=>'stub-jacket.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 380000
@@ -85,7 +80,6 @@ class TableProductsSeeder extends Seeder
       'name' => 'Nike SB Steele',
       'slug' => str_slug('Nike SB Steele', '-'),
       'model' => 'Jaket Pria',
-      'photo'=>'stub-jacket.jpg',
       'description' => 'This is new',
       'stock' => rand(1, 20),
       'price' => 1200000

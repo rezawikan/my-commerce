@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Rating;
 
 class CatalogsController extends Controller
 {
@@ -18,6 +19,19 @@ class CatalogsController extends Controller
      */
     public function index(Request $request, $category = null)
     {
+
+      // $product = Product::find(2);
+      // // return $product;
+      //
+      // $rating = new Rating;
+      // $rating->rating = 4;
+      // $rating->comment = 'wowsasd';
+      // $rating->user_id = 2;
+      //
+      // $product->ratings()->save($rating);
+      //
+      // return 'wos';
+      // return Product::first()->ratings;
 
         // return $category
         $min = $max = 0;
@@ -57,18 +71,18 @@ class CatalogsController extends Controller
         }
 
         $products = $products->paginate(12);
-        // return $products
+        // return $products->where('');
 
         return view('catalogs.index')->with(compact('products', 'category', 'selectedCategory', 'search', 'sort', 'order', 'min', 'max'));
     }
 
-    public function show(Request $request, $category = null, $slug = null)
+    public function show($category, $slug)
     {
         $selectedCategory = Category::where('slug', $category)->first();
-        $products  = Product::whereIn('slug', $selectedCategory->related_slug)->where('slug', $slug)->first();
-        $related = Product::whereIn('slug', $selectedCategory->related_slug)->whereNotIn('slug', [$products->slug]);
+        $product  = Product::whereIn('slug', $selectedCategory->related_slug)->where('slug', $slug)->first();
+        $related = Product::whereIn('slug', $selectedCategory->related_slug)->whereNotIn('slug', [$product->slug]);
         $relatedProducts = $related->random(10)->get();
-
-        return view('catalogs.show')->with(compact('products', 'relatedProducts'));
+        // return $product->images;
+        return view('catalogs.show')->with(compact('product', 'relatedProducts'));
     }
 }

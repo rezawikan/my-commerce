@@ -20,11 +20,12 @@
     </head>
 
     <body class="gray-bg">
+        <div id="app">
+          @yield('content')
+        </div>
 
-        @yield('content')
 
         <!-- Javascript -->
-        <script src="{{ mix('admin/js/jquery-3.1.1.min.js') }}"></script>
-        <script src="{{ mix('admin/js/bootstrap.min.js') }}"></script>
+        <script src="{{ mix('admin/js/app.min.js') }}"></script>
 </body>
 </html>

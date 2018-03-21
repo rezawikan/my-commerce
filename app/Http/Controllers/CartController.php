@@ -26,7 +26,6 @@ class CartController extends Controller
     public function __construct(CartService $cart)
     {
         $this->cart = $cart;
-        $this->middleware('guest');
     }
 
 
@@ -59,23 +58,24 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-      'product_id' => 'required|exists:products,id',
-      'quantity' => 'required|integer|min:1'
-    ]);
+          'product_id' => 'required|exists:products,id',
+          'quantity' => 'required|integer|min:1'
+        ]);
 
         $product    = Product::findOrFail($request->product_id);
         $quantity   = $request->quantity;
 
         if (Auth::check()) {
             $cart = Cart::firstOrNew([
-          'product_id' => $request->product_id,
-          'user_id' => $request->user()->id,
-        ]);
+              'product_id' => $request->product_id,
+              'user_id' => $request->user()->id,
+            ]);
 
             $cart->quantity += $quantity;
             $cart->save();
 
-            return redirect()->back()->with('added', $product->name);
+            // return redirect()->back()->with('added', $product->name);
+            return response($this->cart->lists());
         } else {
             $cart       = $this->cart->lists(); // get cookie. if default, cookie is set to null
 

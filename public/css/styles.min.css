@@ -50,7 +50,9 @@
   padding: 4px 17px 6px;
 }
 
-.sub-menu > li.sub-menu-user .user-ava, .toolbar-dropdown > li.sub-menu-user .user-ava, .sub-menu > li.sub-menu-user .user-info, .toolbar-dropdown > li.sub-menu-user .user-info {
+.sub-menu > li.sub-menu-user .user-ava, .toolbar-dropdown > li.sub-menu-user .user-ava,
+.sub-menu > li.sub-menu-user .user-info,
+.toolbar-dropdown > li.sub-menu-user .user-info {
   display: table-cell;
   vertical-align: middle;
 }
@@ -67,7 +69,9 @@
   border-radius: 50%;
 }
 
-.sub-menu > li.sub-menu-user .user-info, .toolbar-dropdown > li.sub-menu-user .user-info {
+
+.sub-menu > li.sub-menu-user .user-info,
+.toolbar-dropdown > li.sub-menu-user .user-info {
   padding-left: 8px;
 }
 

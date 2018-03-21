@@ -23,34 +23,36 @@
 
 </head>
 <body>
+  <div id="app">
+    <!-- Wrapper-->
+      <div id="wrapper app">
 
-  <!-- Wrapper-->
-    <div id="wrapper">
+          <!-- Navigation -->
+          @include('admin.layouts.navigation')
 
-        <!-- Navigation -->
-        @include('admin.layouts.navigation')
+          <!-- Page wraper -->
+          <div id="page-wrapper" class="gray-bg">
 
-        <!-- Page wraper -->
-        <div id="page-wrapper" class="gray-bg">
+              <!-- Page wrapper -->
+              @include('admin.layouts.topnavbar')
 
-            <!-- Page wrapper -->
-            @include('admin.layouts.topnavbar')
+              <!-- Main view  -->
+              @yield('content')
 
-            <!-- Main view  -->
-            @yield('content')
+              <!-- Footer -->
+              @include('admin.layouts.footer')
 
-            <!-- Footer -->
-            @include('admin.layouts.footer')
+          </div>
+          <!-- End page wrapper-->
 
-        </div>
-        <!-- End page wrapper-->
+      </div>
+      <!-- End wrapper-->
+  </div>
 
-    </div>
-    <!-- End wrapper-->
 
     <!-- Mainly scripts -->
-    <script src="{{ mix('admin/js/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ mix('admin/js/bootstrap.min.js') }}"></script>
+    <script src="{{ mix('admin/js/app.min.js') }}"></script>
+    {{-- <script src="{{ mix('js/axios.min.js') }}"></script> --}}
     <script src="{{ mix('admin/js/plugins/metisMenu/jquery.metisMenu.min.js') }}"></script>
     <script src="{{ mix('admin/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 

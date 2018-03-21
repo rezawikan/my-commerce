@@ -31,6 +31,7 @@
   <!-- Bootstrap Styles -->
   <link rel="stylesheet" media="screen" href="{{ mix('css/bootstrap.min.css') }}">
 
+
   <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
   <link rel="stylesheet" media="screen" href="{{ mix('css/vendor.min.css') }}">
 
@@ -68,13 +69,11 @@
   </div>
 
   <!-- JavaScript (jQuery) libraries, plugins and custom scripts-->
-  <script src="{{ mix('js/jquery.min.js') }}"></script>
-  <script src="{{ mix('js/popper.min.js') }}"></script>
-  <script src="{{ mix('js/bootstrap.min.js') }}"></script>
+  <script src="{{ mix('js/app.min.js') }}"></script>
   <script src="{{ mix('js/axios.min.js') }}"></script>
   <script src="{{ mix('js/vendor.min.js') }}"></script>
   <script src="{{ mix('js/scripts.min.js') }}"></script>
-  <script src="{{ mix('js/app.min.js') }}"></script>
+
 
   @stack('b-scripts')
 
