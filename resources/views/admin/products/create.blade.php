@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-12">
       <h3>New Product</a></small></h3>
-      <form class="form-horizontal" method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+      <form class="form-horizontal" method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
         @include('admin.products._form')
       </form>
     </div>

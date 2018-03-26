@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-12">
       <h3>Edit Product</a></small></h3>
-      <form class="form-horizontal" method="POST" action="{{ route('products.update', ['id' => $product->id]) }}" enctype="multipart/form-data">
+      <form class="form-horizontal" method="POST" action="{{ route('admin.products.update', ['id' => $product->id]) }}" enctype="multipart/form-data">
         {{ method_field('PUT') }}
         @include('admin.products._form')
       </form>

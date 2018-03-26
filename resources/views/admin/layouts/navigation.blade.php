@@ -26,7 +26,10 @@
             <li class="{{ isActiveRoute(['master/products']) }}">
                 <a href="#"><i class="fa fa-shopping-cart"></i><span class="nav-label">Products</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li class="{{ isActiveRoute('master/products') }}"><a href="{{ url('master/products') }}">List of Tables</a></li>
+                    <li class="{{ isActiveRoute('master/products') }}"><a href="{{ url('master/products') }}">List of Products</a></li>
+                </ul>
+                <ul class="nav nav-second-level collapse">
+                    <li class="{{ isActiveRoute('master/products/trashes') }}"><a href="{{ url('master/products/trashes') }}">Trashes</a></li>
                 </ul>
             </li>
             <li>

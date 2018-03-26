@@ -15,7 +15,7 @@
           <li><a href="{{route('catalogs.index')}}">Home</a></li>
           @if (isset($selectedCategory) && $selectedCategory->parent)
             <li class="separator">&nbsp;</li>
-            <li><a href="{{ url('/catalogs/'.$selectedCategory->parent->slug) }}">{{ $selectedCategory->parent->title }}</a></li>
+            <li><a href="{{ url("/catalogs/{$selectedCategory->parent->slug}") }}">{{ $selectedCategory->parent->title }}</a></li>
             <li class="separator">&nbsp;</li>
           @else
             <li class="separator">&nbsp;</li>

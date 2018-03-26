@@ -93,8 +93,8 @@
                                       <td>{{ $product->price }}</td>
                                       <td>{{ $product->updated_at }}</td>
                                       <td>
-                                        <a href="{{ route('products.edit',['id' => $product->id ]) }}" class="btn btn-sm btn-primary" style="display: inline-block;">Edit</a>
-                                        <form class="form-inline" action="{{ route('products.destroy', ['id' => $product->id]) }}" method="POST" style="display: inline-block;">
+                                        <a href="{{ route('admin.products.edit',['id' => $product->id ]) }}" class="btn btn-sm btn-primary" style="display: inline-block;">Edit</a>
+                                        <form class="form-inline" action="{{ route('admin.products.destroy', ['id' => $product->id]) }}" method="POST" style="display: inline-block;">
                                           {{ method_field('DELETE') }} {{ csrf_field() }}
                                           <button type="submit" class="btn btn-sm btn-primary">Move to Trash</button>
                                         </form>
@@ -102,7 +102,7 @@
                                     </tr>
                                     @endforeach
                                     <tr>
-                                      <td colspan="8">{{ $products->appends('q')->links() }}</td>
+                                      <td colspan="8">{{ $products->appends('q')->links('vendor.pagination.default') }}</td>
                                     </tr>
                               </tbody>
                           </table>

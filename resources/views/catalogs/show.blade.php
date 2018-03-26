@@ -12,13 +12,12 @@
             <div class="product-gallery"><span class="product-badge text-danger">30% Off</span>
               <div class="gallery-wrapper">
                 @foreach ($product->images as $key => $value)
-                  <div class="gallery-item {{ $loop->first ? 'active' : '' }}"><a href="{{ asset('storage/'.$value->path) }}" data-hash="#{{ $key }}" data-size="1000x667"></a></div>
+                  <div class="gallery-item {{ $loop->first ? 'active' : '' }}"><a href="{{ asset('storage/'.$value->path) }}" data-hash="{{ $key }}" data-size="1000x1600"></a></div>
                 @endforeach
-                {{-- <div class="gallery-item"><a href="img/shop/single/05.jpg" data-hash="five" data-size="1000x667"></a></div> --}}
               </div>
               <div class="product-carousel owl-carousel">
                 @foreach ($product->images as $key => $value)
-                  <div data-hash="#{{ $key }}"><img src="{{ asset('storage/'.$value->path) }}" alt="Product"></div>
+                  <div data-hash="{{ $key }}"><img src="{{ asset('storage/'.$value->path) }}" alt="Product"></div>
                 @endforeach
               </div>
               <ul class="product-thumbnails">
@@ -108,8 +107,11 @@
                   <iframe class="embed-responsive-item" src="//www.youtube.com/embed/B81qd2v6alw?rel=0" allowfullscreen></iframe>
                 </div>
               </div>
-              <div class="tab-pane fade" id="reviews" role="tabpanel">
-                @foreach ($product->ratings as $key => $value)
+
+              {{-- <div class="tab-pane fade" id="reviews" role="tabpanel"> --}}
+
+                <review :id-product={{ $product->id }} :auth-check={{ auth()->check() ? 'true' : 'false' }} ></review>
+                {{-- @foreach ($product->ratings as $key => $value)
                   <div class="comment">
                     <div class="comment-author-ava"><img src="img/reviews/01.jpg" alt="Review author"></div>
                     <div class="comment-body">
@@ -128,7 +130,7 @@
                         </div>
                       </div>
                       <p class="comment-text">{{ $value->comment }}</p>
-                      <div class="comment-footer"><span class="comment-meta">{{ App\Models\User::find($value->user_id)->first()->name }}</span></div>
+                      <div class="comment-footer"><span class="comment-meta">{{ $value->user_name }}</span></div>
                     </div>
                   </div>
                 @endforeach
@@ -163,8 +165,8 @@
                   <div class="col-12 text-right">
                     <button class="btn btn-outline-primary" type="submit">Submit Review</button>
                   </div>
-                </form>
-              </div>
+                </form> --}}
+              {{-- </div> --}}
             </div>
           </div>
         </div>
@@ -250,6 +252,7 @@
           </div>
         </div>
       </div>
+
 @endsection
 
 @push('last-scripts')

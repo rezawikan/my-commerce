@@ -22,9 +22,6 @@ mix.js('resources/assets/js/app.js', 'public/js/app.min.js')
     'resources/assets/vendor/css/socicon.min.css',
   ], 'public/css/vendor.min.css')
   .scripts([
-    'resources/assets/js/scripts.js',
-  ], 'public/js/scripts.min.js')
-  .scripts([
     'resources/assets/vendor/axios.min.js',
   ], 'public/js/axios.min.js')
   .scripts([
@@ -41,7 +38,10 @@ mix.js('resources/assets/js/app.js', 'public/js/app.min.js')
     'resources/assets/vendor/js/photoswipe-ui-default.min.js',
     'resources/assets/vendor/js/photoswipe.min.js',
     'resources/assets/vendor/js/velocity.min.js',
-  ], 'public/js/vendor.min.js');
+  ], 'public/js/vendor.min.js')
+  .scripts([
+    'resources/assets/js/scripts.js',
+  ], 'public/js/scripts.min.js');
 mix.copyDirectory('resources/assets/img', 'public/img')
 mix.copyDirectory('resources/assets/fonts', 'public/fonts')
   .options({

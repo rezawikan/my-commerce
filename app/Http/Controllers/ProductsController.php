@@ -73,7 +73,7 @@ class ProductsController extends Controller
         $product->categories()->sync($request->category);
         // flash($request->get('name'). ' product saved')->success();
 
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -137,8 +137,8 @@ class ProductsController extends Controller
             $product->categories()->detech();
         }
 
-        flash($request->get('name').' product saved')->success();
-        return redirect()->route('products.index');
+        // flash($request->get('name').' product saved')->success();
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -173,9 +173,9 @@ class ProductsController extends Controller
      */
     public function trashes(Request $request)
     {
-        $q = $request->get('q');
+        $q = $request->get('search');
         $products = Product::onlyTrashed()->where('name', 'LIKE', '%'.$q.'%')->paginate(10);
-        return view('products.trashes')->with(compact(['products','q']));
+        return view('admin.products.trashes')->with(compact(['products','q']));
     }
 
     /**

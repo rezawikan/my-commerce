@@ -19,19 +19,40 @@ class CatalogsController extends Controller
      */
     public function index(Request $request, $category = null)
     {
+//       $product = Product::find(1);
+//         // return $product;
+//
+//         $rating = new Rating;
+//         $rating->subject = 'Test for comment 1';
+//         $rating->rating = 4;
+//         $rating->review = 'wowsasd';
+//         $rating->user_id = 2;
+//
+//         $product->ratings()->save($rating);
+//
+//         $product = Product::find(1);
+//         $rating = new Rating;
+//         $rating->subject = 'Test for comment 2';
+//         $rating->rating = 3;
+//         $rating->review = 'wasday768asd87owsasd';
+//         $rating->user_id = 1;
+//
+//         $product->ratings()->save($rating);
+//
+// $product = Product::find(1);
+//         $rating = new Rating;
+//         $rating->subject = 'Test for comment 3';
+//         $rating->rating = 5;
+//         $rating->review = 'wasday768asd87erytuowsasd';
+//         $rating->user_id = 3;
+//
+//         $product->ratings()->save($rating);
+//
+//             $a = Rating::find(1);
+//             return $a->user_name;
+//
+//         return 'test';
 
-      // $product = Product::find(2);
-      // // return $product;
-      //
-      // $rating = new Rating;
-      // $rating->rating = 4;
-      // $rating->comment = 'wowsasd';
-      // $rating->user_id = 2;
-      //
-      // $product->ratings()->save($rating);
-      //
-      // return 'wos';
-      // return Product::first()->ratings;
 
         // return $category
         $min = $max = 0;
@@ -39,19 +60,9 @@ class CatalogsController extends Controller
         if (isset($category)) {
             $selectedCategory = Category::where('slug', $category)->first();
             $products  = Product::whereIn('slug', $selectedCategory->related_slug)->where('name', 'LIKE', '%'.$search.'%');
-
-            // return $selectedCategory;
-          // if (isset($slug)) {
-              // $products  = Product::whereIn('slug', $selectedCategory->related_slug)->where('slug', $category);
-              // return var_dump($products) ;
-          // } else {
-              // $products  = Product::whereIn('slug', $selectedCategory->related_slug)->where('name', 'LIKE', '%'.$search.'%');
-          // }
         } else {
             $products = Product::where('name', 'LIKE', '%'.$search.'%');
         }
-
-        // return $products->get();
 
         $min  = $request->get('min');
         $max = $request->get('max');
@@ -70,19 +81,23 @@ class CatalogsController extends Controller
             $products = $products->orderBy($field, $order);
         }
 
-        $products = $products->paginate(12);
-        // return $products->where('');
+        $products = $products->paginate(6);
+
+        // return $products;
 
         return view('catalogs.index')->with(compact('products', 'category', 'selectedCategory', 'search', 'sort', 'order', 'min', 'max'));
     }
 
     public function show($category, $slug)
     {
-        $selectedCategory = Category::where('slug', $category)->first();
-        $product  = Product::whereIn('slug', $selectedCategory->related_slug)->where('slug', $slug)->first();
-        $related = Product::whereIn('slug', $selectedCategory->related_slug)->whereNotIn('slug', [$product->slug]);
-        $relatedProducts = $related->random(10)->get();
-        // return $product->images;
+        $product = Product::with(['categories' => function ($query) use ($category) {
+            $query->where('slug', $category);
+        }])->where('slug', $slug)->first();
+
+        $relatedProducts = Product::with(['categories' => function ($query) use ($category, $product) {
+            $query->where('slug', $category)->whereNotIn('slug', [$product->slug]);
+        }])->random(10)->get();
+
         return view('catalogs.show')->with(compact('product', 'relatedProducts'));
     }
 }

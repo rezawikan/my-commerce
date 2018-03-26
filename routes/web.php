@@ -25,13 +25,25 @@ Route::group(['prefix' => 'master'], function () {
 
     Route::group(['middleware' => ['admin.auth']], function () {
         Route::get('dashboard', 'AuthAdmin\HomeController@index')->name('admin.home');
-        Route::post('products/trashes/{product}', 'ProductsController@restore')->name('products.restore');
-        Route::resource('products', 'ProductsController');
+        Route::get('products/trashes', 'ProductsController@trashes')->name('admin.products.trashes');
+        Route::post('products/trashes/{product}', 'ProductsController@restore')->name('admin.products.restore');
+        // Route::resource('products', 'ProductsController');
+        Route::get('products', 'ProductsController@index')->name('admin.products.index');
+        Route::get('products/create', 'ProductsController@create')->name('admin.products.create');
+        Route::post('products', 'ProductsController@store')->name('admin.products.store');
+        Route::get('products/{product}/edit', 'ProductsController@edit')->name('admin.products.edit');
+        Route::match(['put', 'patch'], 'products/{product}','ProductsController@update')->name('admin.products.update');
+        Route::get('products/{product}', 'ProductsController@show')->name('admin.products.show');
+        Route::delete('products/{product}', 'ProductsController@destroy')->name('admin.products.destroy');
         Route::delete('upload/{basename}/{id}', 'UploadController@destroy')->name('admin.upload.delete');
         Route::post('upload/{basename}', 'UploadController@store')->name('admin.upload.store');
         Route::get('upload/{basename}/{id?}', 'UploadController@index')->name('admin.upload.index');
     });
 });
+
+// Api
+Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
+Route::get('ratingdetails/{id}', 'Api\ApiRatingServiceController@ratingDetails');
 
 
     // Customer
@@ -45,7 +57,7 @@ Route::group(['prefix' => 'master'], function () {
     Route::get('catalogs/{category?}', 'CatalogsController@index')->name('catalogs.index');
     Route::get('catalogs/{category}/{slug}', 'CatalogsController@show')->name('catalogs.show');
     Route::resource('categories', 'CategoriesController');
-    Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
+
     Route::resource('cart', 'CartController');
     Route::get('wishlist', 'WishlistController@wishlistShow')->name('wishlist.show');
     Route::post('wishlist/{id}', 'WishlistController@wishlistPost')->name('wishlist.post');

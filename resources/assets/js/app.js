@@ -22,6 +22,7 @@ Vue.component('wishlist', require('./components/wishlist.vue'));
 Vue.component('addcart', require('./components/addcart.vue'));
 Vue.component('cart', require('./components/cart.vue'));
 Vue.component('profile', require('./components/profile.vue'));
+Vue.component('review', require('./components/review.vue'));
 
 const app = new Vue({
   el: '#app'

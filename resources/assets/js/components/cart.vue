@@ -1,5 +1,3 @@
-
-
 <template>
 <div class="cart"><a href="cart.html"></a><i class="icon-bag"></i><span class="count" v-text="totalproduct"> </span><span class="subtotal" v-text="total">  </span>
   <div class="toolbar-dropdown">

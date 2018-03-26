@@ -36,7 +36,8 @@
                 <div class="grid-item">
                   <div class="product-card">
                     <div class="product-badge text-danger">50% Off</div>
-                    <a class="product-thumb" href="catalogs/{{ $product->categories->first()->slug }}/{{ $product->slug }}">
+                    {{-- {{dd($product->slug)}} --}}
+                    <a class="product-thumb" href="{{ url("/catalogs/{$product->categories->first()->slug}/{$product->slug}") }}">
                       <img src="{{ asset('/img/shop/products/01.jpg') }}" alt="Product"></a>
                     <h3 class="product-title"><a href="shop-single.html">{{ $product->name }}</a></h3>
                     <h4 class="product-price" >
@@ -60,7 +61,7 @@
                 @if (isset($search))
                   <h1>:()</h1>
                   @if (isset($selectedCategory))
-                    <p><a href="{{ url('/catalogs?search=' . $search) }}">Cari di semua kategori <i class="fa fa-arrow-right"></i></a></p>
+                    <p><a href="{{ url("/catalogs?search={$search}") }}">Cari di semua kategori <i class="fa fa-arrow-right"></i></a></p>
                   @endif
                 @else
                   asdasd
@@ -103,7 +104,7 @@
                       <ul>
                       @foreach ($category->childs as $child)
                             <li>
-                              <a href="{{ url('catalogs/'.$child->slug )}}">{{ $child->title }}</a>
+                              <a href="{{ url("/catalogs/{$child->slug}")}}">{{ $child->title }}</a>
                               <span>({{ $child->total_products }})</span>
                             </li>
                       @endforeach
