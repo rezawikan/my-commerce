@@ -23,7 +23,7 @@
             <li class="{{ isActiveRoute('master/dashboard') }}">
                 <a href="{{ url('master/dashboard') }}"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
             </li>
-            <li class="{{ isActiveRoute(['master/products']) }}">
+            <li class="{{ isActiveRoute(['master/products','master/products/trashes']) }}">
                 <a href="#"><i class="fa fa-shopping-cart"></i><span class="nav-label">Products</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li class="{{ isActiveRoute('master/products') }}"><a href="{{ url('master/products') }}">List of Products</a></li>

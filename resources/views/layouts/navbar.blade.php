@@ -8,7 +8,7 @@
     <div class="inner">
       <!-- Off-Canvas Toggle (#shop-categories)--><a class="offcanvas-toggle cats-toggle" href="#shop-categories" data-toggle="offcanvas"></a>
       <!-- Off-Canvas Toggle (#mobile-menu)--><a class="offcanvas-toggle menu-toggle" href="#mobile-menu" data-toggle="offcanvas"></a>
-      <!-- Site Logo--><a class="site-logo" href="index.html"><img src="img/logo/logo.png" alt="Unishop"></a>
+      <!-- Site Logo--><a class="site-logo" href="index.html"><img src="{{ asset('img/logo/logo.png')}}" alt="Unishop"></a>
     </div>
   </div>
   <!-- Main Navigation-->
@@ -16,14 +16,14 @@
     <ul>
       <li class="has-megamenu active"><a href="index.html"><span>Home</span></a>
         <ul class="mega-menu">
-          <li><a class="d-block img-thumbnail text-center navi-link" href="index.html"><img alt="Featured Products Slider" src="img/mega-menu-home/01.jpg">
+          <li><a class="d-block img-thumbnail text-center navi-link" href="index.html"><img alt="Featured Products Slider" src="{{ asset('img/mega-menu-home/01.jpg')}}">
               <h6 class="mt-3">Featured Products Slider</h6></a></li>
-          <li><a class="d-block img-thumbnail text-center navi-link" href="home-featured-categories.html"><img alt="Featured Categories" src="img/mega-menu-home/02.jpg">
+          <li><a class="d-block img-thumbnail text-center navi-link" href="home-featured-categories.html"><img alt="Featured Categories" src="{{ asset('img/mega-menu-home/02.jpg')}}">
               <h6 class="mt-3">Featured Categories</h6></a></li>
-          <li><a class="d-block img-thumbnail text-center navi-link" href="home-collection-showcase.html"><img alt="Products Collection Showcase" src="img/mega-menu-home/03.jpg">
+          <li><a class="d-block img-thumbnail text-center navi-link" href="home-collection-showcase.html"><img alt="Products Collection Showcase" src="{{ asset('img/mega-menu-home/03.jpg')}}">
               <h6 class="mt-3">Products Collection Showcase</h6></a></li>
           <li>
-            <div class="img-thumbnail text-center"><img alt="More To Come. Stay Tuned!" src="img/mega-menu-home/04.jpg">
+            <div class="img-thumbnail text-center"><img alt="More To Come. Stay Tuned!" src="{{ asset('img/mega-menu-home/04.jpg')}}">
               <h6 class="mt-3">More To Come. Stay Tuned!</h6>
             </div>
           </li>
@@ -82,7 +82,7 @@
             </ul>
           </li>
           <li>
-            <section class="promo-box" style="background-image: url(img/banners/02.jpg);"><span class="overlay-dark" style="opacity: .4;"></span>
+            <section class="promo-box" style="background-image: url('{{ asset('img/banners/02.jpg')}});"><span class="overlay-dark" style="opacity: .4;"></span>
               <div class="promo-box-content text-center padding-top-2x padding-bottom-2x">
                 <h4 class="text-light text-thin text-shadow">New Collection of</h4>
                 <h3 class="text-bold text-light text-shadow">Sunglasses</h3><a class="btn btn-sm btn-primary" href="#">Shop Now</a>
@@ -90,7 +90,7 @@
             </section>
           </li>
           <li>
-            <section class="promo-box" style="background-image: url(img/banners/03.jpg);">
+            <section class="promo-box" style="background-image: url('{{ asset('img/banners/03.jpg')}});">
               <!-- Choose between .overlay-dark (#000) or .overlay-light (#fff) with default opacity of 50%. You can overrride default color and opacity values via 'style' attribute.--><span class="overlay-dark" style="opacity: .45;"></span>
               <div class="promo-box-content text-center padding-top-2x padding-bottom-2x">
                 <h3 class="text-bold text-light text-shadow">Limited Offer</h3>
@@ -207,7 +207,7 @@
         <div class="account"><a href="account-orders.html"></a><i class="icon-head"></i>
           <ul class="toolbar-dropdown">
             <li class="sub-menu-user">
-              <div class="user-ava"><img src="img/account/user-ava-sm.jpg" alt="Daniel Adams">
+              <div class="user-ava"><img src="{{ asset('img/account/user-ava-sm.jpg')}}" alt="Daniel Adams">
               </div>
               <div class="user-info">
                 <h6 class="user-name">{{ Auth::user()->name }}</h6><span class="text-xs text-muted">290 Reward points</span>

@@ -20,10 +20,13 @@
   </div>
   <!-- Pagination Reviews -->
   <nav class="pagination">
-    <div class="column text-center">
+    <div class="column text-center" v-if="details.total != 0">
       <button class="btn btn-outline-secondary btn-sm" @click.prevent="prevPage(details.prev_page_url)" :class="details.prev_page_url == null ? 'disabled':''"><i class="icon-arrow-left"></i>&nbsp;Prev</button>
       <span> from {{details.from}} to {{details.to}} of {{details.total}} </span>
       <button class="btn btn-outline-secondary btn-sm" @click.prevent="nextPage(details.next_page_url)" :class="details.next_page_url == null ? 'disabled':''">Next&nbsp;<i class="icon-arrow-right"></i></button>
+    </div>
+    <div class="column text-center" v-else="details.total == 0">
+      <span> Review Not Found </span>
     </div>
   </nav>
 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="svgfilters csscalc cssgradients preserve3d supports svgclippaths svgasimg touchevents cssanimations boxsizing csstransforms csstransforms3d csstransitions svg">
 
 <head>
   <meta charset="utf-8">
@@ -109,6 +109,9 @@
   <script src="{{ mix('js/axios.min.js') }}"></script>
   <script src="{{ mix('js/vendor.min.js') }}"></script>
   <script src="{{ mix('js/scripts.min.js') }}"></script>
+  <script src="http://themes.rokaux.com/unishop/v2.2/template-1/customizer/customizer.min.js" type="text/javascript">
+
+  </script>
 
 
   @stack('b-scripts')

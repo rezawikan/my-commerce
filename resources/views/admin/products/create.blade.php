@@ -67,7 +67,7 @@
 
       axios.get('/master/upload/products')
         .then(function(response){
-          // console.log(response.data);
+          console.log(response.data);
             $.each(response.data, function (key, value) {
               console.log(value);
                 var mockFile = { id: value.id, name: value.filename, size: value.size };

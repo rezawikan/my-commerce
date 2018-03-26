@@ -55,7 +55,7 @@ export default {
       axios.get('/cartdetails')
         .then( response => {
           this.details = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(response => console.log('error'));
     },
@@ -65,20 +65,20 @@ export default {
           quantity: 1
         })
         .then(response => {
-          console.log('brhasil melakukan POST');
-          console.log(response.data);
+          // console.log('brhasil melakukan POST');
+          // console.log(response.data);
           this.getCart();
         })
         .catch(response => console.log('false'));
     },
     deleteCart(id, index) {
-      console.log(id);
-      console.log(index);
-      console.log('sd');
+      // console.log(id);
+      // console.log(index);
+      // console.log('sd');
       axios.delete('/cart/' + id)
         .then(response => {
           this.details.splice(index, 1);
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(response => console.log('error'));
     }

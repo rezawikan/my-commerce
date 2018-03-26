@@ -1,6 +1,6 @@
 <div class="offcanvas-container" id="mobile-menu">
   <a class="account-link" href="account-orders.html">
-    <div class="user-ava"><img src="img/account/user-ava-md.jpg" alt="Daniel Adams">
+    <div class="user-ava"><img src="{{ asset('img/account/user-ava-md.jpg')}}" alt="Daniel Adams">
     </div>
     <div class="user-info">
       <h6 class="user-name">Daniel Adams</h6><span class="text-sm text-white opacity-60">290 Reward points</span>

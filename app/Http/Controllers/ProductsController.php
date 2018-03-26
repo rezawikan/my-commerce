@@ -40,7 +40,6 @@ class ProductsController extends Controller
      */
     public function create()
     {
-
         $options = Category::GroupArray();
 
         return view('admin.products.create')->with(compact('options'));
@@ -152,9 +151,9 @@ class ProductsController extends Controller
         $product = Product::withTrashed()->where('id', $id)->first();
 
         if ($product->trashed()) {
-            // if ($product->photo) {
-            //     File::delete(storage_path().'/app/public/'.$product->photo);
-            // }
+            if ($product->photo) {
+                File::delete(storage_path().'/app/public/'.$product->photo);
+            }
 
             // flash('Product "'.$product->name.'" permanently deleted')->success();
             $product->forceDelete();
@@ -162,7 +161,7 @@ class ProductsController extends Controller
             // flash('Product "'.$product->name.'" move to trash')->success();
             $product->delete();
         }
-        return redirect()->route('products.index');
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -173,7 +172,7 @@ class ProductsController extends Controller
      */
     public function trashes(Request $request)
     {
-        $q = $request->get('search');
+        $q = $request->get('q');
         $products = Product::onlyTrashed()->where('name', 'LIKE', '%'.$q.'%')->paginate(10);
         return view('admin.products.trashes')->with(compact(['products','q']));
     }

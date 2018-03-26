@@ -55,7 +55,7 @@
     <div class="row">
       <div class="col-md-7 padding-bottom-1x">
         <!-- Payment Methods-->
-        <div class="margin-bottom-1x" style="max-width: 615px;"><img src="img/payment_methods.png" alt="Payment Methods">
+        <div class="margin-bottom-1x" style="max-width: 615px;"><img src="{{ asset('img/payment_methods.png')}}" alt="Payment Methods">
         </div>
       </div>
       <div class="col-md-5 padding-bottom-1x">
@@ -76,6 +76,6 @@
       </div>
     </div>
     <!-- Copyright-->
-    <p class="footer-copyright">© All rights reserved. Made with &nbsp;<i class="icon-heart text-danger"></i><a href="http://rokaux.com/" target="_blank"> &nbsp;by rokaux</a></p>
+    <p class="footer-copyright">© All rights reserved. Made with &nbsp;<i class="icon-heart text-danger"></i> &nbsp;by EA</p>
   </div>
 </footer>
