@@ -7,7 +7,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-window.Event = new Vue();
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+// window.Event = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,15 +19,31 @@ window.Event = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import VueTheMask from 'vue-the-mask';
-Vue.use(VueTheMask);
+ const ProductIndex = require('./components/products/Index.vue')
 
-Vue.component('wishlist', require('./components/wishlist.vue'));
-Vue.component('addcart', require('./components/addcart.vue'));
-Vue.component('cart', require('./components/cart.vue'));
-Vue.component('profile', require('./components/profile.vue'));
-Vue.component('review', require('./components/review.vue'));
+ const routes = [
+     {
+         path: '/catalogs',
+         name: 'catalogs.index',
+         component: ProductIndex
+     }
+ ]
+
+ const router = new VueRouter({
+     mode: 'history',
+     routes
+ })
+//
+// import VueTheMask from 'vue-the-mask';
+// Vue.use(VueTheMask);
+
+// Vue.component('wishlist', require('./components/wishlist.vue'));
+// Vue.component('addcart', require('./components/addcart.vue'));
+// Vue.component('cart', require('./components/cart.vue'));
+// Vue.component('profile', require('./components/profile.vue'));
+// Vue.component('review', require('./components/review.vue'));
 
 const app = new Vue({
-  el: '#app'
+  el: '#app',
+  router
 });

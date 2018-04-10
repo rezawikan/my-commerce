@@ -4,14 +4,14 @@
   </div>
   <nav class="offcanvas-menu">
     <ul class="menu">
-      @foreach (App\Models\Category::NoParent()->get() as $category)
+      {{-- @foreach (App\Models\Category::NoParent()->get() as $category)
           <li class="has-children"><span><a href="#">{{ $category->title }}</a><span class="sub-menu-toggle"></span></span>
             <ul class="offcanvas-submenu">
               @foreach ($category->childs as $child)
                   <li><a href="{{ url("/catalogs/{$child->slug}")}}">{{ $child->title }}</a></li>
               @endforeach
           </ul>
-      @endforeach
+      @endforeach --}}
         </li>
     </ul>
   </nav>

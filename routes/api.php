@@ -20,3 +20,7 @@ use Illuminate\Http\Request;
 //   Route::resource('cart', 'CartController');
 //   Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
 // });
+
+Route::get('products', 'Api\ProductsController@index');
+Route::get('products/{category?}', 'Api\ProductsController@index')->name('catalogs.index');
+Route::get('products/{category}/{slug}', 'Api\ProductsController@show')->name('catalogs.show');

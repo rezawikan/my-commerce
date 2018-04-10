@@ -2,7 +2,7 @@
 
 @section('content')
   <!-- Page Title-->
-      @include('catalogs.breadcrumb')
+      {{-- @include('catalogs.partials._breadcrumb') --}}
       <!-- Page Content-->
       <div class="container padding-bottom-3x mb-1">
         <div class="row">
@@ -15,12 +15,13 @@
                   <label for="sorting">Sort by:</label>
                   <select class="form-control" id="sorting" onchange="location=this.value">
                     {{-- <option >Popularity</option> --}}
-                    <option value={{ appendQueryString(['sort' => 'price', 'order' => 'asc']) }} {{isQueryString(['sort' => 'price', 'order' => 'asc']) ? 'selected' : ''}}>Low - High Price</option>
+                    {{-- <option value={{ appendQueryString(['sort' => 'price', 'order' => 'asc']) }} {{isQueryString(['sort' => 'price', 'order' => 'asc']) ? 'selected' : ''}}>Low - High Price</option>
                     <option value={{ appendQueryString(['sort' => 'price', 'order' => 'desc']) }} {{isQueryString(['sort' => 'price', 'order' => 'desc']) ? 'selected' : ''}}>High - Low Price</option>
                     <option value={{ appendQueryString(['sort' => 'name', 'order' => 'asc']) }} {{isQueryString(['sort' => 'name', 'order' => 'asc']) ? 'selected' : ''}}>A - Z Order</option>
-                    <option value={{ appendQueryString(['sort' => 'name', 'order' => 'desc']) }} {{isQueryString(['sort' => 'name', 'order' => 'desc']) ? 'selected' : ''}}>Z - A Order</option>
+                    <option value={{ appendQueryString(['sort' => 'name', 'order' => 'desc']) }} {{isQueryString(['sort' => 'name', 'order' => 'desc']) ? 'selected' : ''}}>Z - A Order</option> --}}
                     <option>Avarage Rating</option>
-                  </select><span class="text-muted">Showing:&nbsp;</span><span>{{ $products->firstItem() }} - {{ $products->lastItem() }} items</span>
+                  </select>
+                  {{-- <span class="text-muted">Showing:&nbsp;</span><span>{{ $products->firstItem() }} - {{ $products->lastItem() }} items</span> --}}
                 </div>
               </div>
               <div class="column">
@@ -32,31 +33,14 @@
               <div class="gutter-sizer"></div>
               <div class="grid-sizer"></div>
               <!-- Product-->
-              @forelse ($products as $product)
-                <div class="grid-item">
-                  <div class="product-card">
-                    <div class="product-badge text-danger">50% Off</div>
-                    {{-- {{dd($product->slug)}} --}}
-                    <a class="product-thumb" href="{{ url("/catalogs/{$product->categories->first()->slug}/{$product->slug}") }}">
-                      <img src="{{ asset('/img/shop/products/01.jpg') }}" alt="Product"></a>
-                    <h3 class="product-title"><a href="shop-single.html">{{ $product->name }}</a></h3>
-                    <h4 class="product-price" >
-                      <del>{{ number_format($product->price,0,',','.') }}</del>$49.99
-                    </h4>
-                    <div class="product-buttons">
-                      @if (Auth::check())
-                        <wishlist
-                        :wishlisted={{ $product->wishlisted() ? 'true' : 'false' }}
-                        :product={{ $product->id }}
-                        ></wishlist>
-                      @else
-                        <button class="btn btn-outline-secondary btn-sm btn-wishlist-guest" title="Whishlist"><i class="icon-heart"></i></button>
-                      @endif
+              @if ($products->count())
+                @each('catalogs.partials._catalogs', $products, 'product')
+              @else
+                No Products
+              @endif
 
-                      <addcart id-cart={{ $product->id }}></addcart>
-                    </div>
-                  </div>
-                </div>
+              {{-- @forelse ($products as $product)
+
               @empty
                 @if (isset($search))
                   <h1>:()</h1>
@@ -66,12 +50,12 @@
                 @else
                   asdasd
                 @endif
-              @endforelse
+              @endforelse --}}
             </div>
             <!-- Pagination-->
-            <nav class="pagination">
+            {{-- <nav class="pagination">
               <div class="column">
-                {{ $products->appends(['category' => $category, 'search' => $search, 'sort' => $sort, 'order' => $order])->links('vendor.pagination.bootstrap-4') }}
+                {{ $products->appends(['category' => $category, 'search' => $search, 'sort' => $sort, 'order' => $order])->links('vendor.pagination.bootstrap-4') }} --}}
                 {{-- <ul class="pages">
                   <li class="active"><a href="#">1</a></li>
                   <li><a href="#">2</a></li>
@@ -80,13 +64,14 @@
                   <li>...</li>
                   <li><a href="#">12</a></li>
                 </ul>
- --}}              </div>
+ --}}
+{{-- </div>
               @if(!$products->lastPage())
                 <div class="column text-right hidden-xs-down"><a class="btn btn-outline-secondary btn-sm" href="{{ $products->nextPageUrl() }}">Next&nbsp;<i class="icon-arrow-right"></i></a></div>
               @else
                 <div class="column text-right hidden-xs-down"><a class="btn btn-outline-secondary btn-sm disabled" href="#">Next&nbsp;<i class="icon-arrow-right"></i></a></div>
               @endif
-            </nav>
+            </nav> --}}
           </div>
           <!-- Sidebar          -->
           <div class="col-xl-3 col-lg-4 order-lg-1">
@@ -94,27 +79,10 @@
               <div class="padding-top-2x hidden-lg-up"></div>
               <!-- Widget Categories-->
               {{-- <categories :data={{}}></categories> --}}
+              @include('catalogs.partials._categories_list')
 
-              <section class="widget widget-categories">
-                <h3 class="widget-title">Shop Categories</h3>
-                <ul>
-                  {{-- {{dd(App\Models\Category::NestedCategory())}} --}}
-                  @foreach (App\Models\Category::NoParent()->get() as $category)
-                    <li class="has-children expanded"><a href="#">{{ $category->title }}</a>
-                      <ul>
-                      @foreach ($category->childs as $child)
-                            <li>
-                              <a href="{{ url("/catalogs/{$child->slug}")}}">{{ $child->title }}</a>
-                              <span>({{ $child->total_products }})</span>
-                            </li>
-                      @endforeach
-                      </ul>
-                  @endforeach
-                    </li>
-                </ul>
-              </section>
               <!-- Widget Price Range-->
-              @include('catalogs.price_range')
+              @include('catalogs.partials._price_range')
               <!-- Widget Brand Filter-->
               {{-- <section class="widget">
                 <h3 class="widget-title">Filter by Brand</h3>

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use App\Http\ViewComposers\ProductFiltersComposer;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -17,9 +18,10 @@ class ComposerServiceProvider extends ServiceProvider
       View::composer(
           '*', 'App\Http\ViewComposers\CategoryComposer'
       );
-      View::composer(
-          '*', 'App\Http\ViewComposers\ProductComposer'
-      );
+      View::composer([
+        'catalogs.partials._categories_list',
+        'catalogs.partials._breadcrumb',
+      ], ProductFiltersComposer::class);
     }
 
     /**

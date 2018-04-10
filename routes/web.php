@@ -49,7 +49,7 @@ Route::get('ratingdetails/{id}', 'Api\ApiRatingServiceController@ratingDetails')
     // Customer
     Auth::routes();
     Route::get('home', 'HomeController@index')->name('home');
-    Route::get('products/trashes', 'ProductsController@trashes')->name('products.trashes');
+    // Route::get('products/trashes', 'ProductsController@trashes')->name('products.trashes');
 
     Route::post('catalogs/wishlists/{product}', 'ProductsController@wishlists')->name('products.wishlists');
     Route::post('catalogs/unwishlists/{product}', 'ProductsController@unwishlists')->name('products.unwishlists');

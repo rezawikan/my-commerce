@@ -57,6 +57,7 @@
     @include('layouts.navbar')
     <!-- Off-Canvas Wrapper-->
     <div class="offcanvas-wrapper">
+      <router-view></router-view>
       @yield('content')
       <!-- Site Footer-->
       @include('layouts.footer')

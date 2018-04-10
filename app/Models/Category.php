@@ -35,57 +35,21 @@ class Category extends Model
     public function getRelatedSlugAttribute()
     {
         $result = $this->products->pluck('slug')->toArray();
-
         foreach ($this->childs as $child) {
             // Array Merge and loop related slug in this function
             $result = array_merge($result, $child->related_slug);
         }
-
         return $result;
     }
-
     /**
     * Get total Products.
     *
     * @param  string  $value
     * @return string
     */
-    public function getTotalProductsAttribute()
+    public function getTotalAttribute()
     {
         return Product::whereIn('slug', $this->related_slug)->count();
-    }
-
-    /**
-     * Scope a query to only include popular users.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeGroupArray($query)
-    {
-        $options = $this->all();
-        $parent  = $this->NoParent()->pluck('title', 'id');
-        $result  = array();
-
-        foreach ($parent as $key => $value) {
-            foreach ($options as $option) {
-                if ($option->parent_id == $key) {
-                    $result[$value][] = $option;
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Scope a query to only include popular users.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeSlug($query, $slug)
-    {
-        return $query->where('slug', $slug);
     }
 
     /**
@@ -98,8 +62,6 @@ class Category extends Model
     {
         return $this->where('parent_id', null);
     }
-
-
 
     /**
      * Block comment

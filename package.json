@@ -30,6 +30,7 @@
     "select2": "^4.0.6-rc.1",
     "summernote": "^0.8.10",
     "tether": "^1.4.3",
+    "vue-router": "^3.0.1",
     "vue-the-mask": "^0.11.1"
   }
 }
