@@ -2,7 +2,7 @@
 
 @section('content')
   <!-- Page Title-->
-      @include('catalogs.breadcrumb')
+      {{-- @include('catalogs.breadcrumb') --}}
 
       <!-- Page Content-->
       <div class="container padding-bottom-3x mb-1">
@@ -76,9 +76,9 @@
             </div>
             <div class="pt-1 mb-2"><span class="text-medium">SKU:</span> #21457832</div>
             <div class="padding-bottom-1x mb-2"><span class="text-medium">Categories:&nbsp;</span>
-              @foreach ($product->categories as $key => $value)
+              {{-- @foreach ($product->categories as $key => $value)
                 <a class="navi-link" href="{{ $value->slug }}">{{ $value->title }}</a>
-              @endforeach
+              @endforeach --}}
             </div>
             <hr class="mb-3">
             <div class="d-flex flex-wrap justify-content-between">

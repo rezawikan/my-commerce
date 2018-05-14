@@ -99,13 +99,16 @@ var Router = function (_String) {
     _inherits(Router, _String);
 
     function Router(name, params, absolute) {
+        var customZiggy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
         _classCallCheck(this, Router);
 
         var _this = _possibleConstructorReturn(this, (Router.__proto__ || Object.getPrototypeOf(Router)).call(this));
 
         _this.name = name;
         _this.absolute = absolute;
-        _this.urlParams = _this.normalizeParams(params);
+        _this.ziggy = customZiggy ? customZiggy : Ziggy;
+        _this.template = _this.name ? new __WEBPACK_IMPORTED_MODULE_0__UrlBuilder__["a" /* default */](name, absolute, _this.ziggy).construct() : '', _this.urlParams = _this.normalizeParams(params);
         _this.queryParams = _this.normalizeParams(params);
         return _this;
     }
@@ -115,9 +118,19 @@ var Router = function (_String) {
         value: function normalizeParams(params) {
             if (typeof params === 'undefined') return {};
 
+            // If you passed in a string or integer, wrap it in an array
             params = (typeof params === 'undefined' ? 'undefined' : _typeof(params)) !== 'object' ? [params] : params;
-            this.numericParamIndices = Array.isArray(params);
 
+            // If the tags object contains an ID and there isn't an ID param in the
+            // url template, they probably passed in a single model object and we should
+            // wrap this in an array. This could be slightly dangerous and I want to find
+            // a better solution for this rare case.
+
+            if (params.hasOwnProperty('id') && this.template.indexOf('{id}') == -1) {
+                params = [params.id];
+            }
+
+            this.numericParamIndices = Array.isArray(params);
             return _extends({}, params);
         }
     }, {
@@ -135,23 +148,24 @@ var Router = function (_String) {
     }, {
         key: 'hydrateUrl',
         value: function hydrateUrl() {
+            var _this2 = this;
+
             var tags = this.urlParams,
                 paramsArrayKey = 0,
-                template = new __WEBPACK_IMPORTED_MODULE_0__UrlBuilder__["a" /* default */](this.name, this.absolute).construct(),
-                params = template.match(/{([^}]+)}/gi),
+                params = this.template.match(/{([^}]+)}/gi),
                 needDefaultParams = false;
 
             if (params && params.length != Object.keys(tags).length) {
                 needDefaultParams = true;
             }
 
-            return template.replace(/{([^}]+)}/gi, function (tag) {
+            return this.template.replace(/{([^}]+)}/gi, function (tag, i) {
                 var keyName = tag.replace(/\{|\}/gi, '').replace(/\?$/, ''),
-                    key = this.numericParamIndices ? paramsArrayKey : keyName,
-                    defaultParameter = Ziggy.defaultParameters[keyName];
+                    key = _this2.numericParamIndices ? paramsArrayKey : keyName,
+                    defaultParameter = _this2.ziggy.defaultParameters[keyName];
 
                 if (defaultParameter && needDefaultParams) {
-                    if (this.numericParamIndices) {
+                    if (_this2.numericParamIndices) {
                         tags = Object.values(tags);
                         tags.splice(key, 0, defaultParameter);
                     } else {
@@ -161,27 +175,27 @@ var Router = function (_String) {
 
                 paramsArrayKey++;
                 if (typeof tags[key] !== 'undefined') {
-                    delete this.queryParams[key];
+                    delete _this2.queryParams[key];
                     return tags[key].id || encodeURIComponent(tags[key]);
                 }
                 if (tag.indexOf('?') === -1) {
-                    throw new Error('Ziggy Error: \'' + keyName + '\' key is required for route \'' + this.name + '\'');
+                    throw new Error('Ziggy Error: \'' + keyName + '\' key is required for route \'' + _this2.name + '\'');
                 } else {
                     return '';
                 }
-            }.bind(this));
+            });
         }
     }, {
         key: 'matchUrl',
         value: function matchUrl() {
             var tags = this.urlParams,
-                paramsArrayKey = 0,
-                template = new __WEBPACK_IMPORTED_MODULE_0__UrlBuilder__["a" /* default */](this.name, this.absolute).construct();
+                paramsArrayKey = 0;
 
-            var windowUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname;
+            var windowUrl = window.location.hostname + (window.location.port ? ':' + window.location.port : '') + window.location.pathname;
 
-            var searchTemplate = template.replace(/(\{[^\}]*\})/gi, '[^\/\?]+');
+            var searchTemplate = this.template.replace(/(\{[^\}]*\})/gi, '[^\/\?]+').split('://')[1];
             var urlWithTrailingSlash = windowUrl.replace(/\/?$/, '/');
+
             return new RegExp("^" + searchTemplate + "\/$").test(urlWithTrailingSlash);
         }
     }, {
@@ -192,8 +206,10 @@ var Router = function (_String) {
             var queryString = '?';
 
             Object.keys(this.queryParams).forEach(function (key, i) {
-                queryString = i === 0 ? queryString : queryString + '&';
-                queryString += key + '=' + encodeURIComponent(this.queryParams[key]);
+                if (this.queryParams[key]) {
+                    queryString = i === 0 ? queryString : queryString + '&';
+                    queryString += key + '=' + encodeURIComponent(this.queryParams[key]);
+                }
             }.bind(this));
 
             return queryString;
@@ -203,7 +219,7 @@ var Router = function (_String) {
         value: function current() {
             var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-            var routeNames = Object.keys(Ziggy.namedRoutes);
+            var routeNames = Object.keys(this.ziggy.namedRoutes);
 
             var currentRoute = routeNames.filter(function (name) {
                 return new Router(name).matchUrl();
@@ -237,8 +253,8 @@ var Router = function (_String) {
     return Router;
 }(String);
 
-function route(name, params, absolute) {
-    return new Router(name, params, absolute);
+function route(name, params, absolute, customZiggy) {
+    return new Router(name, params, absolute, customZiggy);
 };
 
 /***/ }),
@@ -251,11 +267,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var UrlBuilder = function () {
-    function UrlBuilder(name, absolute) {
+    function UrlBuilder(name, absolute, ziggyObject) {
         _classCallCheck(this, UrlBuilder);
 
         this.name = name;
-        this.route = Ziggy.namedRoutes[this.name];
+        this.ziggy = ziggyObject;
+        this.route = this.ziggy.namedRoutes[this.name];
 
         if (typeof this.name === 'undefined') {
             throw new Error('Ziggy Error: You must provide a route name');
@@ -273,13 +290,13 @@ var UrlBuilder = function () {
         value: function setDomain() {
             if (!this.absolute) return '/';
 
-            if (!this.route.domain) return Ziggy.baseUrl.replace(/\/?$/, '/');
+            if (!this.route.domain) return this.ziggy.baseUrl.replace(/\/?$/, '/');
 
-            var host = (this.route.domain || Ziggy.baseDomain).replace(/\/+$/, '');
+            var host = (this.route.domain || this.ziggy.baseDomain).replace(/\/+$/, '');
 
-            if (Ziggy.basePort && host.replace(/\/+$/, '') === Ziggy.baseDomain.replace(/\/+$/, '')) host = Ziggy.baseDomain + ':' + Ziggy.basePort;
+            if (this.ziggy.basePort && host.replace(/\/+$/, '') === this.ziggy.baseDomain.replace(/\/+$/, '')) host = this.ziggy.baseDomain + ':' + this.ziggy.basePort;
 
-            return Ziggy.baseProtocol + '://' + host + '/';
+            return this.ziggy.baseProtocol + '://' + host + '/';
         }
     }, {
         key: 'construct',

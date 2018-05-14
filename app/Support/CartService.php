@@ -109,7 +109,7 @@ class CartService
                         'id' => $id,
                         'detail' => $product->toArray(),
                         'quantity' => $quantity,
-                        'subTotal' => $product->price * $quantity
+                        'subTotal' => $product->last_price * $quantity
                     ]);
             }
         }

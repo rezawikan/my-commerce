@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\Wishlist;
+use App\Models\Category;
+use App\Models\Rating;
+use App\Models\ProductImage;
 use App\Filters\Product\ProductFilters;
 use App\Observers\ProductObserver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Middleware\Traits\TraitsRateable;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -20,7 +24,14 @@ class Product extends Model
     *
     * @var array
     */
-    protected $fillable = ['name','slug','model','description','stock','price'];
+    protected $fillable = ['name','slug','description','stock','discount','price','category_id','discount'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['featured_image','last_price'];
 
     /**
       * Bootstrap any application services.
@@ -34,14 +45,41 @@ class Product extends Model
     }
 
     /**
+ * Get the user's full name.
+ *
+ * @return string
+ */
+    public function getFeaturedImageAttribute()
+    {
+        return "https://dummyimage.com/600x400/ffffff/000000";
+    }
+
+    /**
+ * Get the user's full name.
+ *
+ * @return string
+ */
+    public function getLastPriceAttribute()
+    {
+        $discount = $this->discount;
+        $price    = $this->price;
+        if ($discount) {
+            $cut      = $price * ($discount/100);
+            return round($price - $cut);
+        }
+        return $price;
+    }
+
+
+    /**
      * Block comment
      *
      * @param type
      * @return void
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany('App\Models\Category');
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -52,7 +90,7 @@ class Product extends Model
      */
     public function images()
     {
-        return $this->hasMany('App\Models\ProductImage');
+        return $this->hasMany(ProductImage::class);
     }
 
 
@@ -61,11 +99,9 @@ class Product extends Model
     *
     * @return boolean
     */
-    public function wishlisted()
+    public function wishlist()
     {
-        return (bool) Wishlist::where('user_id', auth()->id())
-                      ->where('product_id', $this->id)
-                      ->first();
+        return $this->belongsToMany(User::class, 'wishlists', 'product_id', 'user_id')->withTimeStamps();
     }
 
     /**
@@ -76,7 +112,7 @@ class Product extends Model
      */
     public function carts()
     {
-        return $this->hasMany('App\Models\Cart');
+        return $this->hasMany(Cart::class);
     }
 
     /**
@@ -94,7 +130,7 @@ class Product extends Model
      */
     public function ratings()
     {
-        return $this->morphMany('App\Models\Rating', 'rateable');
+        return $this->morphMany(Rating::class, 'rateable');
     }
 
     /**
@@ -121,12 +157,38 @@ class Product extends Model
     /**
      * filter models
      */
-    public function scopeSlug(Builder $builder, $value)
+    public function scopeSlugs(Builder $builder, $category = null, $slug = null)
     {
-        if ($value == null) {
-            return $builder;
-        }
+        $related  = $this->related_slug($category) ?? [$category];
 
-        return $builder->where('slug', $value);
+        return $builder->when($slug, function ($query) use ($slug) {
+            return $query->where('name', $slug);
+        })->when($related, function ($query) use ($related) {
+            return $query->whereHas('category', function (Builder $builder) use ($related) {
+                return $builder->whereIn('slug', $related);
+            });
+        });
+
+        return $builder;
+    }
+
+    /**
+     * Get the Related sub-category Slug.
+     *
+     * @param  string  $value
+     * @return array or null
+     */
+    protected function related_slug($based)
+    {
+        $category =  Category::where('slug', $based)->first();
+        if (!empty($category)) {
+            $result   = [$category->slug];
+            foreach ($category->childs as $child) {
+                // Array Merge and loop related slug in this function
+                $result = array_merge($result, $this->related_slug($child->slug));
+            }
+            return $result;
+        }
+        return null;
     }
 }

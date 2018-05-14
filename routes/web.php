@@ -23,7 +23,7 @@ Route::group(['prefix' => 'master'], function () {
     Route::get('password/reset/{token}', 'AuthAdmin\ResetPasswordController@showResetForm')->name('admin.password.reset');
     Route::post('password/reset', 'AuthAdmin\ResetPasswordController@reset');
 
-    Route::group(['middleware' => ['admin.auth']], function () {
+    Route::group(['middleware' => ['auth:admin']], function () {
         Route::get('dashboard', 'AuthAdmin\HomeController@index')->name('admin.home');
         Route::get('products/trashes', 'ProductsController@trashes')->name('admin.products.trashes');
         Route::post('products/trashes/{product}', 'ProductsController@restore')->name('admin.products.restore');
@@ -41,35 +41,31 @@ Route::group(['prefix' => 'master'], function () {
     });
 });
 
-// Api
-Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
-Route::get('ratingdetails/{id}', 'Api\ApiRatingServiceController@ratingDetails');
+// Customer
+Auth::routes();
+Route::get('home', 'HomeController@index')->name('home');
+// Route::get('products/trashes', 'ProductsController@trashes')->name('products.trashes');
+
+Route::post('catalogs/wishlists/{product}', 'ProductsController@wishlists')->name('products.wishlists');
+Route::post('catalogs/unwishlists/{product}', 'ProductsController@unwishlists')->name('products.unwishlists');
+Route::get('/', 'HomeController@index');
+Route::get('catalogs/{category}', 'CatalogsController@index')->name('catalogs.index');
+Route::get('catalogs/{category}/{slug}', 'CatalogsController@show')->name('catalogs.show');
+Route::resource('categories', 'CategoriesController');
+
+Route::resource('cart', 'CartController');
+Route::get('wishlist', 'WishlistController@wishlistShow')->name('wishlist.show');
+Route::post('wishlist/{id}', 'WishlistController@wishlistPost')->name('wishlist.post');
+Route::post('unwishlist/{id}', 'WishlistController@unWishlistPost')->name('unwishlist.post');
+Route::post('cwishlist/{id}', 'WishlistController@checkWishlist')->name('wishlisted.check');
+// Route::get('checkout/login', 'CheckoutController@login');
+// Route::get('checkout/login', 'CheckoutController@postLogin');
+Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
 
 
-    // Customer
-    Auth::routes();
-    Route::get('home', 'HomeController@index')->name('home');
-    // Route::get('products/trashes', 'ProductsController@trashes')->name('products.trashes');
-
-    Route::post('catalogs/wishlists/{product}', 'ProductsController@wishlists')->name('products.wishlists');
-    Route::post('catalogs/unwishlists/{product}', 'ProductsController@unwishlists')->name('products.unwishlists');
-    Route::get('/', 'CatalogsController@index');
-    Route::get('catalogs/{category?}', 'CatalogsController@index')->name('catalogs.index');
-    Route::get('catalogs/{category}/{slug}', 'CatalogsController@show')->name('catalogs.show');
-    Route::resource('categories', 'CategoriesController');
-
-    Route::resource('cart', 'CartController');
-    Route::get('wishlist', 'WishlistController@wishlistShow')->name('wishlist.show');
-    Route::post('wishlist/{id}', 'WishlistController@wishlistPost')->name('wishlist.post');
-    Route::post('unwishlist/{id}', 'WishlistController@unWishlistPost')->name('unwishlist.post');
-    // Route::get('checkout/login', 'CheckoutController@login');
-    // Route::get('checkout/login', 'CheckoutController@postLogin');
-    Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
-    Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
-
-
-    Route::group(['middleware' => ['auth']], function () {
-        Route::get('profile','UserController@index')->name('profile.index');
-        Route::get('profile/edit','UserController@edit')->name('profile.edit');
-        Route::put('profile/{id}','UserController@update')->name('profile.update');
-    });
+Route::group(['middleware' => ['auth']], function () {
+  Route::get('profile','UserController@index')->name('profile.index');
+  Route::get('profile/edit','UserController@edit')->name('profile.edit');
+  Route::put('profile/{id}','UserController@update')->name('profile.update');
+});

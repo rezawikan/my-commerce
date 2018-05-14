@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Admin;
+use App\Models\User;
 use App\Models\Role;
 
 class TableRoleSeeder extends Seeder
@@ -54,5 +55,22 @@ class TableRoleSeeder extends Seeder
       ]);
 
         $customerUser->roles()->attach(3);
+
+
+
+
+
+        User::create([
+        'name' => 'Mochammad',
+        'email' => 'reza.wikan.dito@gmail.com',
+        'password' => bcrypt('12345'),
+      ]);
+
+
+        User::create([
+        'name' => 'Customer',
+        'email' => 'customer@gmail.com',
+        'password' => bcrypt('12345'),
+      ]);
     }
 }

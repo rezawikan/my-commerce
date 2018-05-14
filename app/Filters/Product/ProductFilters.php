@@ -22,11 +22,28 @@ class ProductFilters extends FiltersAbstract
             $category = Category::noParent()->get();
             $map      = [];
             foreach ($category as $key => $value) {
+                $map[$value->slug]['total'] = $value->total;
                 foreach ($value->childs as $sub) {
-                    $map[$value->slug][$sub->slug] = $sub->total;
+                    $map[$value->slug]['value'][$sub->slug]['total'] = $sub->total;
+                    if ($sub->hasChild()) {
+                        $map[$value->slug]['value'][$sub->slug]['childs'] = ProductFilters::related($sub);
+                    }
                 }
             }
             return $map;
         });
+    }
+
+    public static function related(Category $based)
+    {
+        $result   = [];
+        foreach ($based->childs as $child) {
+            // Array Merge and loop related slug in this function
+            $result = array_merge($result, [$child->slug]);
+            if ($child->hasChild()) {
+                $result = array_merge($result, ProductFilters::related($child));
+            }
+        }
+        return $result;
     }
 }

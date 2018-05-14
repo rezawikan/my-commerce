@@ -16,10 +16,11 @@ mix.js('resources/assets/js/app.js', 'public/js/app.min.js')
   .sass('resources/assets/vendor/bootstrap/bootstrap.scss', 'public/css/bootstrap.min.css')
   .styles([
     'resources/assets/vendor/css/feather.min.css',
-    'resources/assets/vendor/css/iziToast.min.css',
+    'node_modules/izitoast/dist/css/iziToast.min.css',
     'resources/assets/vendor/css/pe-icon-7-stroke.min.css',
     'resources/assets/vendor/css/photoswipe.min.css',
     'resources/assets/vendor/css/socicon.min.css',
+    'resources/assets/vendor/css/nouislider.css'
   ], 'public/css/vendor.min.css')
   .scripts([
     'resources/assets/vendor/axios.min.js',
@@ -30,10 +31,10 @@ mix.js('resources/assets/js/app.js', 'public/js/app.min.js')
   .scripts([
     'resources/assets/vendor/js/downCount.min.js',
     'resources/assets/vendor/js/gmap3.min.js',
-    'resources/assets/vendor/js/imagesloaded.pkgd.min.js',
-    'resources/assets/vendor/js/isotope.pkgd.min.js',
-    'resources/assets/vendor/js/iziToast.min.js',
-    'resources/assets/vendor/js/nouislider.min.js',
+    // 'https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js',
+    // 'https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js',
+    // 'node_modules/izitoast/dist/js/isiziToast.min.js',
+    // 'resources/assets/vendor/js/nouislider.min.js',
     'resources/assets/vendor/js/owl.carousel.min.js',
     'resources/assets/vendor/js/photoswipe-ui-default.min.js',
     'resources/assets/vendor/js/photoswipe.min.js',

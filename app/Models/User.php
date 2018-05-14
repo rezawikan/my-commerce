@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Role;
+use App\Models\Wishlist;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Role;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','provider','provider_id','phone','photo'
+        'name', 'email', 'password','provider','provider_id','photo'
     ];
 
     /**
@@ -33,6 +35,6 @@ class User extends Authenticatable
      */
     public function wishlists()
     {
-        return $this->belongsToMany(Product::class, 'wishlists', 'user_id', 'product_id')->withTimeStamps();
+        return $this->hasMany(Wishlist::class);
     }
 }

@@ -1,0 +1,11 @@
+.noUi-base {
+  background: #ededed;
+}
+
+.noUi-origin:first-child {
+  background: #9da9b9;
+}
+
+.noUi-origin:last-child {
+  background: #ededed;
+}

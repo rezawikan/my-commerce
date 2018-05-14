@@ -32,6 +32,6 @@ class ApiCartServiceController extends Controller
      */
     public function cartDetails()
     {
-        return $this->cart->details();
+      return $this->cart->details() ?? null;
     }
 }

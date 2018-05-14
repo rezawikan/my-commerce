@@ -11,7 +11,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-// window.Event = new Vue();
+window.Event = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -19,13 +19,13 @@ Vue.use(VueRouter)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- const ProductIndex = require('./components/products/Index.vue')
+ const ProductIndex = require('./components/catalogs/Index.vue')
 
  const routes = [
      {
-         path: '/catalogs',
+         path: '/catalogs/:category',
          name: 'catalogs.index',
-         component: ProductIndex
+         component: ProductIndex,
      }
  ]
 
@@ -33,13 +33,20 @@ Vue.use(VueRouter)
      mode: 'history',
      routes
  })
+
+ router.beforeEach((to, from, next) => {
+    document.title = to.params.category.replace(/\b\w/g, l => l.toUpperCase())
+
+    next()
+});
+
 //
 // import VueTheMask from 'vue-the-mask';
 // Vue.use(VueTheMask);
 
 // Vue.component('wishlist', require('./components/wishlist.vue'));
 // Vue.component('addcart', require('./components/addcart.vue'));
-// Vue.component('cart', require('./components/cart.vue'));
+Vue.component('cart', require('./components/cart.vue'));
 // Vue.component('profile', require('./components/profile.vue'));
 // Vue.component('review', require('./components/review.vue'));
 

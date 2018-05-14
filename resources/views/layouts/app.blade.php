@@ -11,7 +11,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>{{ config('app.name') }} @yield('title')</title>
+  <title>@yield('title')</title>
 
   <!-- SEO Meta Tags-->
   <meta name="description" content="Unishop - Universal E-Commerce Template">
@@ -57,7 +57,7 @@
     @include('layouts.navbar')
     <!-- Off-Canvas Wrapper-->
     <div class="offcanvas-wrapper">
-      <router-view></router-view>
+      
       @yield('content')
       <!-- Site Footer-->
       @include('layouts.footer')
@@ -110,7 +110,7 @@
   <script src="{{ mix('js/axios.min.js') }}"></script>
   <script src="{{ mix('js/vendor.min.js') }}"></script>
   <script src="{{ mix('js/scripts.min.js') }}"></script>
-  <script src="http://themes.rokaux.com/unishop/v2.2/template-1/customizer/customizer.min.js" type="text/javascript">
+  {{-- <script src="http://themes.rokaux.com/unishop/v2.2/template-1/customizer/customizer.min.js" type="text/javascript"> --}}
 
   </script>
 

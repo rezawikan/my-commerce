@@ -42,6 +42,27 @@ class Category extends Model
         return $result;
     }
     /**
+    * Scope a query to only include popular users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGroupArray($query)
+    {
+        $options = $this->all();
+        $parent  = $this->NoParent()->pluck('title', 'id');
+        $result  = array();
+        foreach ($parent as $key => $value) {
+            foreach ($options as $option) {
+                if ($option->parent_id == $key) {
+                    $result[$value][] = $option;
+                }
+            }
+        }
+        return $result;
+    }
+    
+    /**
     * Get total Products.
     *
     * @param  string  $value
@@ -93,7 +114,7 @@ class Category extends Model
      */
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product');
+        return $this->hasMany('App\Models\Product');
     }
 
     /**

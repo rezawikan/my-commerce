@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Wishlist;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
@@ -27,7 +29,7 @@ class WishlistController extends Controller
     public function wishlistPost($id)
     {
         $product = Product::find($id);
-        return auth()->user()->wishlists()->attach($product->id);
+        return $product->wishlist()->attach(auth()->id());
     }
 
     /**
@@ -39,17 +41,18 @@ class WishlistController extends Controller
     public function unWishlistPost($id)
     {
         $product = Product::find($id);
-        return auth()->user()->wishlists()->detach($product->id);
+        return $product->wishlist()->detach(auth()->id());
     }
 
     /**
-     * Display all wishlist products.
+     * unassign a wishlist to product.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  object  $product
+     * @return boolean
      */
-    public function wishlistShow()
+    public function checkWishlist($id)
     {
-        return auth()->user()->wishlists()->get();
+        $user = User::find($id);
+        return $user->wishlists->pluck('product_id');
     }
 }

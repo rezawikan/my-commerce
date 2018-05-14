@@ -13,14 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-// Route::group(['middleware' => ['auth.basic']], function() {
-//   Route::resource('cart', 'CartController');
-//   Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
-// });
 
-Route::get('products', 'Api\ProductsController@index');
-Route::get('products/{category?}', 'Api\ProductsController@index')->name('catalogs.index');
-Route::get('products/{category}/{slug}', 'Api\ProductsController@show')->name('catalogs.show');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::resource('cart', 'CartController');
+Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
+Route::get('ratingdetails/{id}', 'Api\ApiRatingServiceController@ratingDetails');
+Route::get('catalogs/{category}', 'Api\ApiCatalogController@index')->name('catalogs.index');
+Route::get('catalogs/{category}/min', 'Api\ApiCatalogController@min')->name('catalogs.min');
+Route::get('catalogs/{category}/max', 'Api\ApiCatalogController@max')->name('catalogs.max');
+Route::get('catalogs/{category}/{slug}', 'Api\ApiCatalogController@show')->name('catalogs.show');
+Route::get('categories', 'Api\ApiCatalogController@categories')->name('categories.show');

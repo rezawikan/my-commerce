@@ -96,9 +96,10 @@ class ProductsController extends Controller
     {
         $product    = Product::findOrFail($id);
         $options    = Category::GroupArray();
-        $categories = $product->categories->pluck('id')->toArray();
 
-        return view('admin.products.edit')->with(compact('product', 'options', 'categories'));
+        $category = $product->category->id;
+        // dd($categories);
+        return view('admin.products.edit')->with(compact('product', 'options', 'category'));
     }
 
     /**

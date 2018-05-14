@@ -38,12 +38,12 @@
 <div class="form-group {{ $errors->has('category') ? 'has-error' : '' }} ">
   <label class="col-lg-2 control-label">Category</label>
   <div class="col-lg-10">
-    <select data-placeholder="Choose Category" class="form-control chosen-select" multiple name="category[]">
+    <select data-placeholder="Choose Category" class="form-control chosen-select" name="category">
       <option value="">Select</option>
       @foreach ($options as $slug => $option)
         <optgroup label="{{ $slug }}">
           @foreach ($option as $value)
-            @if (isset($categories) && in_array($value->id, $categories))
+            @if (isset($category) && ($value->id == $category))
               <option value="{{ $value->id }}" selected>{{ $value->title }}</option>
             @else
               <option value="{{ $value->id }}">{{ $value->title }}</option>
