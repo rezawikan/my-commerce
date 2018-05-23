@@ -1,100 +1,91 @@
 <template>
 <section class="widget widget-categories">
   <h3 class="widget-title">Price Range</h3>
-  <form class="price-range-slider" href="#">
-    <div class="ui-range-slider"></div>
+  <button class="btn btn-outline-primary btn-sm" type="submit" @click.prevent="clearFilter('price')">Remove</button>
+  <div class="price-range-slider">
+    <vue-slider ref="slider" :min="min" :max="max" :tooltip="false" v-model="value"></vue-slider>
     <footer class="ui-range-slider-footer">
       <div class="column">
-        <button class="btn btn-outline-primary btn-sm" type="submit">Filter</button>
+        <button class="btn btn-outline-primary btn-sm" type="submit" @click.prevent="priceFilter">Filter</button>
       </div>
       <div class="column">
         <div class="ui-range-values">
-          <div class="ui-range-value-min"><span></span>
+          <div class="ui-range-value-min"><span v-text="value[0]"></span>
             <input type="hidden" name="min">
           </div>&nbsp;-&nbsp;
-          <div class="ui-range-value-max"><span></span>
-            <input type="hidden" name="max">
+          <div class="ui-range-value-max"><span v-text="value[1]"></span>
           </div>
         </div>
       </div>
     </footer>
-  </form>
+  </div>
 </section>
 </template>
 
 <script>
-import noUiSlider from 'nouislider'
+import vueSlider from 'vue-slider-component'
 export default {
-  // props: [
-  //   'catalog',
-  //   'wishlisted'
-  // ],
-  directives: {
-    noUiSlider,
+  components: {
+    vueSlider,
   },
   data: function() {
     return {
-      prices: {
-        'min': 0,
-        'max': 10000
-      }
+      value: [5, 75],
+      min: 0,
+      max: 100,
+      selectedFilters: {}
     }
   },
-  created() {
-    this.getDataMin();
-    this.getDataMax();
+  watch: {
+    '$route.query': {
+      handler(query) {
+        this.getDataMinMax()
+      },
+      deep: true
+    }
   },
   mounted() {
-    this.getSlider(this.prices.min, this.prices.max);
-  },
-  computed: {
-    pricing() {
-      let price = this.$route.query.price;
-      if (typeof price !== 'undefined' && price !== null) {
-        return price.split('and');
-      }
-      return ['100', '200'];
-    },
+    this.getDataMinMax();
   },
   methods: {
-    getSlider(min, max) {
-      let rangeSlider = document.querySelector('.ui-range-slider');
-      let valueMin = document.querySelector('.ui-range-value-min span'),
-        valueMax = document.querySelector('.ui-range-value-max span'),
-        valueMinInput = document.querySelector('.ui-range-value-min input'),
-        valueMaxInput = document.querySelector('.ui-range-value-max input');
-
-      if (min != 0 && max != 0) {
-        noUiSlider.create(rangeSlider, {
-          start: [parseInt(this.pricing[0]), parseInt(this.pricing[1])],
-          connect: true,
-          step: 1,
-          range: {
-            'min': min,
-            'max': max
-          }
-        });
+    priceFilter() {
+      let price = this.value[0] + 'and' + this.value[1];
+      this.selectedFilters = Object.assign({}, this.$route.query, {
+        price
+      });
+      this.updateQueryString();
+    },
+    updateQueryString() {
+      let filters = _.omit(this.selectedFilters, ['page']);
+      this.$router.replace({
+        query: {
+          ...filters
+        }
+      })
+    },
+    getCurrentFilter(price = this.$route.query.price) {
+      if (typeof price !== 'undefined' && price !== null) {
+        let piece = price.split('and');
+        this.value = [parseInt(piece[0]), parseInt(piece[1])];
+      } else {
+        this.value = [this.min, this.max];
       }
     },
-    updateSliderRange(min, max) {
-      updateSlider.noUiSlider.updateOptions({
-        range: {
-          'min': min,
-          'max': max
+    clearFilter(key) {
+      let filters = _.omit(this.$route.query, key);
+      this.$router.replace({
+        query: {
+          ...filters
         }
-      });
+      })
     },
-    getDataMin() {
-      axios.get('/api/catalogs/' + this.$route.params.category + '/min')
+    getDataMinMax(params = this.$route.params.category) {
+      axios.get('/api/catalogs/minmax/' + params)
         .then(response => {
-          this.prices.min = response.data.data;
-          console.log('test');
+          this.max = response.data.max;
+          this.min = response.data.min;
+          this.getCurrentFilter();
         })
-        .catch(response => console.log('error'));
-    },
-    getDataMax() {
-      axios.get('/api/catalogs/' + this.$route.params.category + '/max')
-        .then(response => this.prices.max = response.data.data)
         .catch(response => console.log('error'));
     }
   }

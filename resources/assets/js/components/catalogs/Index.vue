@@ -102,6 +102,7 @@ export default {
       meta: {},
       isotope: null,
       wishlisted: {},
+      authorized: false
     }
   },
   watch: {
@@ -148,8 +149,8 @@ export default {
     getCatalogs(page = this.$route.query.page, filters = this.$route.query) {
       axios.get('/api/catalogs/' + this.$route.params.category, {
           params: {
-            page,
-            ...filters
+            ...filters,
+            page
           }
         })
         .then(response => {

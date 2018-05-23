@@ -52,17 +52,11 @@ class ApiCatalogController extends Controller
         ], 200);
     }
 
-    public function max(Request $request, $category)
+    public function minmax(Request $request, $category)
     {
         return response()->json([
-        'data' => Product::with(['category'])->filter($request)->slugs($category)->max('price')
-      ], 200);
-    }
-
-    public function min(Request $request, $category)
-    {
-        return response()->json([
-        'data' => Product::with(['category'])->filter($request)->slugs($category)->min('price')
+        'min' => Product::with(['category'])->filter($request)->slugs($category)->min('price'),
+        'max' => Product::with(['category'])->filter($request)->slugs($category)->max('price')
       ], 200);
     }
 }

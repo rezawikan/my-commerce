@@ -22,7 +22,6 @@ Route::resource('cart', 'CartController');
 Route::get('cartdetails', 'Api\ApiCartServiceController@cartDetails');
 Route::get('ratingdetails/{id}', 'Api\ApiRatingServiceController@ratingDetails');
 Route::get('catalogs/{category}', 'Api\ApiCatalogController@index')->name('catalogs.index');
-Route::get('catalogs/{category}/min', 'Api\ApiCatalogController@min')->name('catalogs.min');
-Route::get('catalogs/{category}/max', 'Api\ApiCatalogController@max')->name('catalogs.max');
+Route::get('catalogs/minmax/{category}', 'Api\ApiCatalogController@minmax')->name('catalogs.minmax');
 Route::get('catalogs/{category}/{slug}', 'Api\ApiCatalogController@show')->name('catalogs.show');
 Route::get('categories', 'Api\ApiCatalogController@categories')->name('categories.show');
