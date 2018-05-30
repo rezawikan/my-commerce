@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Wishlist;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Rating;
 use App\Models\ProductImage;
 use App\Filters\Product\ProductFilters;
@@ -80,6 +81,17 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Block comment
+     *
+     * @param type
+     * @return void
+     */
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     /**

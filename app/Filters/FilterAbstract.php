@@ -26,9 +26,9 @@ abstract class FilterAbstract
      */
     protected function resolveOrder($order)
     {
-      $value = implode(array_values($order)) ;
+        $value = implode(array_values($order)) ;
 
-      return array_get([
+        return array_get([
           'desc' => 'desc',
           'asc' => 'asc'
       ], $value, 'desc');
@@ -42,7 +42,20 @@ abstract class FilterAbstract
      */
     protected function resolveType($order)
     {
-      return key($order);
+        return key($order);
     }
 
+    /**
+     * Resolve the order direction to be used.
+     *
+     * @param  string $direction
+     * @return string
+     */
+    protected function resolveSlug($brands)
+    {
+      // dd($brands);
+        return array_map(function ($brand) {
+            return $brand['slug'];
+        }, $brands);
+    }
 }

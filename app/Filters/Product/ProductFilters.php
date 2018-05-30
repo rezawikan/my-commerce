@@ -6,14 +6,16 @@ use Illuminate\Support\Facades\Cache;
 use App\Filters\FiltersAbstract;
 use App\Filters\Product\Sorting\Sort;
 use App\Filters\Product\Sorting\Price;
+use App\Filters\Product\Sorting\Brands;
 use App\Models\Category;
 
 class ProductFilters extends FiltersAbstract
 {
     //
     protected $filters = [
-      'sort' => Sort::class,
-      'price'  => Price::class
+      'sort'  => Sort::class,
+      'price' => Price::class,
+      'brand' => Brands::class
     ];
 
     public static function mappings()

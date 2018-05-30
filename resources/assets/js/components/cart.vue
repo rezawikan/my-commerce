@@ -95,7 +95,7 @@ export default {
 
       iziToast.warning({
         title: 'Deleted',
-        message: 'Successfully delete to cart',
+        message: 'Successfully delete from cart',
         backgroundColor: '#6eccf7'
       });
 

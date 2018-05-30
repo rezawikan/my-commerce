@@ -10,20 +10,39 @@ class Sort extends FilterAbstract
     public function mappings()
     {
         return [
+          'new' => [
+            'name' => 'Terbaru',
+            'filter' => [
+              'created_at' => 'desc'
+            ]
+          ],
             'pricedesc' => [
-              'price' => 'desc'
+              'name' => 'Termahal',
+              'filter' => [
+                'price' => 'desc'
+              ]
             ],
             'priceasc' => [
+              'name' => 'Terendah',
+              'filter' => [
               'price' => 'asc'
-            ],
-            'namedesc' => [
-              'name' => 'desc'
+              ]
             ],
             'nameasc' => [
+              'name' => 'A - Z Order',
+              'filter' => [
               'name' => 'asc'
-            ]
+              ]
+            ],
+            'namedesc' => [
+              'name' => 'Z - A Order',
+              'filter' => [
+              'name' => 'desc'
+              ]
+            ],
         ];
     }
+
     /**
      * Order by views in descending
      *
@@ -37,6 +56,6 @@ class Sort extends FilterAbstract
             return $builder->orderBy('created_at', 'desc');
         }
 
-        return $builder->orderBy($this->resolveType($value), $this->resolveOrder($value));
+        return $builder->orderBy($this->resolveType($value['filter']), $this->resolveOrder($value['filter']));
     }
 }

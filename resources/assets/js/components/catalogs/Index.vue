@@ -25,14 +25,16 @@
           <div class="column">
             <div class="shop-sorting">
               <label for="sorting">Sort by:</label>
-              <select class="form-control" id="sorting" onchange="location=this.value">
-                        <option>Avarage Rating</option>
-                      </select>
-              <span class="text-muted">Showing:&nbsp;</span><span>items</span>
+              <select class="form-control" id="sorting" v-model="selectedFilters">
+                    <option v-for="(option, index) in options" :value="index" v-text="option.name"></option>
+              </select>
+              <span class="text-muted">Showing:&nbsp;</span><span>{{meta.total}} items</span>
             </div>
           </div>
           <div class="column">
-            <div class="shop-view"><a class="grid-view active" href="shop-grid-ls.html"><span></span><span></span><span></span></a><a class="list-view" href="shop-list-ls.html"><span></span><span></span><span></span></a></div>
+            <div class="shop-view">
+              <a href="#" :class="'grid-view ' + (layout == 'grid' ? 'active' : '')" @click.prevent="setLayout('grid')"><span></span><span></span><span></span></a>
+              <a href="#" :class="'list-view ' + (layout == 'list' ? 'active' : '')" @click.prevent="setLayout('list')"><span></span><span></span><span></span></a></div>
           </div>
         </div>
         <!-- Products Grid-->
@@ -40,7 +42,7 @@
           <div class="gutter-sizer"></div>
           <div class="grid-sizer"></div>
           <!-- Product-->
-          <catalog v-for="catalog in catalogs" :catalog="catalog" :key="catalog.id" :wishlisted="wishlisted" v-images-loaded.on.progress="callbackImages"></catalog>
+          <catalog v-for="catalog in catalogs" :catalog="catalog" :key="catalog.id" :wishlisted="wishlisted" v-images-loaded.on.progress="reLayoutTheCatalogs" :layout="layout" :authorized="authorized"></catalog>
         </div>
         <!-- Pagination-->
         <pagination :meta="meta" :offset="3" v-on:pagination:switched="getCatalogs"></pagination>
@@ -54,6 +56,9 @@
 
           <!-- Widget Price Range-->
           <price-filters></price-filters>
+
+          <!-- Widget Brand Filter-->
+          <brand-filters></brand-filters>
 
           <!-- Promo Banner-->
           <section class="promo-box">
@@ -73,6 +78,7 @@
 <script>
 import Catalog from './partials/Catalog.vue'
 import PriceFilters from './partials/PriceFilters.vue'
+import BrandFilters from './partials/BrandFilters.vue'
 import Pagination from '../pagination/Pagination.vue'
 import Categories from './partials/Categories.vue'
 import Isotope from 'isotope-layout'
@@ -81,6 +87,7 @@ import imagesLoaded from 'vue-images-loaded'
 export default {
   components: {
     Catalog,
+    BrandFilters,
     PriceFilters,
     Pagination,
     Categories,
@@ -102,7 +109,10 @@ export default {
       meta: {},
       isotope: null,
       wishlisted: {},
-      authorized: false
+      authorized: false,
+      options: {},
+      selectedFilters: this.$route.query.sort || 'new',
+      layout: null
     }
   },
   watch: {
@@ -117,24 +127,46 @@ export default {
         this.getCatalogs()
       },
       deep: true
+    },
+    selectedFilters: {
+      handler(query) {
+        console.log(query);
+        this.sortBy(query);
+      },
+      deep: true
+    },
+    layout: function() {
+      this.reLayoutTheCatalogs();
+    }
+
+  },
+  computed: {
+    view: function() {
+      if (this.layout == 'grid') {
+        return 'grid-item';
+      } else {
+        return 'product-list';
+      }
     }
   },
-  mounted() {
-    this.getCatalogs();
-    this.getUser();
-  },
   created: function() {
+    setTimeout(() => {
+      this.getLayout();
+      this.getCatalogs();
+      this.getUser();
+      this.getSortFilters();
+    }, 300);
     // listen when pagination clicked
     Event.$on('wishlistResponse', value => {
       this.getUser();
     });
   },
   methods: {
-    reLayoutTheGrid() {
+    reLayoutTheCatalogs() {
       setTimeout(() => {
         let grid = document.querySelector('.isotope-grid');
         this.isotope = new Isotope(grid, {
-          itemSelector: '.grid-item',
+          itemSelector: '.' + this.view,
           transitionDuration: '0.7s',
           masonry: {
             columnWidth: '.grid-sizer',
@@ -142,9 +174,6 @@ export default {
           }
         });
       }, 1);
-    },
-    callbackImages() {
-      this.reLayoutTheGrid();
     },
     getCatalogs(page = this.$route.query.page, filters = this.$route.query) {
       axios.get('/api/catalogs/' + this.$route.params.category, {
@@ -154,21 +183,53 @@ export default {
           }
         })
         .then(response => {
+          this.catalogs = null;
           this.catalogs = response.data.data;
           this.meta = response.data.meta;
+          console.log('berhasil catalog');
         })
-        .catch(response => console.log('error'));
+        .catch(response => console.log('error catalogs'));
+    },
+    sortBy(sort) {
+      let sorts = Object.assign({}, this.$route.query, {
+        sort
+      });
+
+      let filters = _.omit(sorts, ['page']);
+
+      this.$router.replace({
+        query: {
+          ...filters
+        }
+      })
+    },
+    getLayout() {
+      axios.get('/api/layout/catalogs')
+        .then(response => this.layout = response.data)
+        .catch(response => console.log('you are not login'));
+    },
+    setLayout(data) {
+      axios.get('/api/layout/catalogs/' + data)
+        .then(response => this.layout = response.data)
+        .catch(response => console.log('you are not login'));
     },
     checkWishlist(value) {
-      console.log(value);
       axios.post('/cwishlist/' + value)
         .then(response => this.wishlisted = response.data)
         .catch(response => console.log('you are not login'));
     },
     getUser() {
       axios.get('/api/user')
-        .then(response => this.checkWishlist(response.data.id))
+        .then(response => {
+          this.checkWishlist(response.data.id)
+          this.authorized = true;
+        })
         .catch(response => console.log('you are not login'));
+    },
+    getSortFilters() {
+      axios.get('/api/sort/catalogs')
+        .then(response => this.options = response.data.data)
+        .catch(response => console.log('error'));
     }
   }
 }

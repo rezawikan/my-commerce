@@ -1,7 +1,7 @@
 <template>
 <section class="widget widget-categories">
   <h3 class="widget-title">Price Range</h3>
-  <button class="btn btn-outline-primary btn-sm" type="submit" @click.prevent="clearFilter('price')">Remove</button>
+  <!-- <button class="btn btn-outline-primary btn-sm" type="submit" @click.prevent="clearFilter('price')">Remove</button> -->
   <div class="price-range-slider">
     <vue-slider ref="slider" :min="min" :max="max" :tooltip="false" v-model="value"></vue-slider>
     <footer class="ui-range-slider-footer">
@@ -44,8 +44,10 @@ export default {
       deep: true
     }
   },
-  mounted() {
-    this.getDataMinMax();
+  created() {
+    setTimeout(() => {
+      this.getDataMinMax()
+    }, 300);
   },
   methods: {
     priceFilter() {

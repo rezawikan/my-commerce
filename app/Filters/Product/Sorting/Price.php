@@ -33,6 +33,10 @@ class Price extends FilterAbstract
                 return $builder;
             }
 
+            if (!request()->has('sort')) {
+                $builder->whereBetween('price', $array)->orderBy('created_at', 'desc');
+            }
+
             return $builder->whereBetween('price', $array);
         }
     }

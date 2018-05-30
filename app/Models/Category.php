@@ -61,7 +61,7 @@ class Category extends Model
         }
         return $result;
     }
-    
+
     /**
     * Get total Products.
     *
